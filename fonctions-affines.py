@@ -1,5 +1,8 @@
 from manim import *
 
+def niceFloat(n) :
+    return str(round(n)) if round(n) == round(n, 1) else str(round(n,1))
+
 class fonctions_affines(Scene):
     def construct(self):
         ax = Axes(
@@ -87,15 +90,18 @@ class fonctions_affines(Scene):
             max_stroke_width_to_length_ratio=50,
         )))
         b1.add_updater(lambda b: b.become(Brace(v2, direction = RIGHT)))
-        b1text.add_updater(lambda t: t.become(b1.get_text(str(round(m.get_value(), 1)))))
+        b1text.add_updater(lambda t: t.become(
+            b1.get_text(niceFloat(m.get_value()))
+        ))
         plot.add_updater(lambda plot: plot.become(ax.plot(lambda x: m.get_value()*x-3, color=RED)))
-        self.play(m.animate.set_value(4), Transform(mText[1], MathTex("4").move_to(mText[1])))
+        # Ne pas retirer le run_time sinon cela provoque un bug (affichage de 4.0 au lieu de 4)
+        self.play(m.animate.set_value(4), Transform(mText[1], MathTex("4").move_to(mText[1])), run_time=1)
         self.wait()
-        self.play(m.animate.set_value(7), Transform(mText[1], MathTex("7").move_to(mText[1])))
+        self.play(m.animate.set_value(7), Transform(mText[1], MathTex("7").move_to(mText[1])), run_time=1)
         self.wait()
-        self.play(m.animate.set_value(-2), Transform(mText[1], MathTex("-2").move_to(mText[1]).shift(RIGHT*0.1)))
+        self.play(m.animate.set_value(-2), Transform(mText[1], MathTex("-2").move_to(mText[1]).shift(RIGHT*0.1)), run_time=1)
         self.wait()
-        self.play(m.animate.set_value(2), Transform(mText[1], MathTex("2").move_to(mText[1])))
+        self.play(m.animate.set_value(2), Transform(mText[1], MathTex("2").move_to(mText[1])), run_time=1)
         self.wait()
         b1.clear_updaters()
         b1text.clear_updaters()
